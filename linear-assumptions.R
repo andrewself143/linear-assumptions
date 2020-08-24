@@ -1,18 +1,29 @@
 #R script for checking the assumptions required for linear regression
+# Simple linear regression using number of pages to predict the cost of a textbook
 
+#Extract Data
+ct = TextPrices$Price
+pg = TextPrices$Pages
 
-ms = Caterpillars$Mass
-fd = Caterpillars$Intake
-plot(fd, ms, xlab = "Food Intake", ylab = "Mass", main = "Food Intake vs Mass")
-fit = lm(Mass~Intake, data = Caterpillars)
+# Investigate relationship: Is linear regression appropriate 
+plot(pg, ct, xlab = "Pages", ylab = "Cost", main = "Pages vs Cost")
+
+#Determine Equation for Regression Line
+fit = lm(Price~Pages, data = TextPrices)
 summary(fit)
-plot(fit)
+
+#Plot residuals vs X
 err = resid(fit)
+plot(pg, err, main = "X vs. Residuals")
+
+#Plot residuals vs fitted
 plot(fit$fitted.values, err, main = "Fitted Values vs. Residuals")
 
-logms = Caterpillars$LogMass
-logfd = Caterpillars$LogIntake
-plot(logfd, logms, xlab = "Log Food Intake", ylab = "Log Mass", main = "Log Food Intake vs Log Mass")
-logFit = lm(LogMass~LogIntake, data = Caterpillars)
-logErr = resid(logFit)
-plot(logFit$fitted.values, logErr, main = "Log Fitted Values vs. Log Residuals")
+##QQ Plot
+qqnorm(err)
+qqline(err)
+
+#stem and leaf and histogram
+stem(err)
+hist(err)
+
